@@ -1,15 +1,13 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load environment variables from .env file
 load_dotenv()
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -18,66 +16,36 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-# Allow hosts
+# Allow hosts - make sure to add your Render domain
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '0.0.0.0',
-    os.getenv('NGROK_URL')  # Only for payments
+    '.onrender.com',  # Allows all subdomains on render.com
+    os.getenv('ALLOWED_HOSTS', '').split(','),
 ]
 
-# CORS origins
+# CORS origins - update with your frontend URL on Render
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
-     f'https://{os.getenv("NGROK_URL")}'  # Only for payments
+    os.getenv('CORS_ALLOWED_ORIGINS', '').split(','),
 ]
 
-# Media and Static Files settings for local development
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
+# Media and Static Files settings
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = []
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
-# Get NGROK_URL
-NGROK_URL = os.getenv('NGROK_URL')
-
-# Special Ngrok configuration only if Ngrok is needed for payments
-# Conditionally add Ngrok URL if it exists
-if NGROK_URL:
-    ALLOWED_HOSTS.extend([
-        NGROK_URL,
-        f'www.{NGROK_URL}',  # Optional: sometimes useful to include www variant
-        f'https://{NGROK_URL}',
-        f'http://{NGROK_URL}'
-    ])
-
-# Update CORS settings similarly
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-]
-
-if NGROK_URL:
-    CORS_ALLOWED_ORIGINS.extend([
-        f'https://{NGROK_URL}',
-        f'http://{NGROK_URL}'
-    ])
-
-# Add Ngrok URL to trusted origins for CSRF protection
+# CSRF settings
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:5173'
+    'http://localhost:5173',
+    os.getenv('CORS_ALLOWED_ORIGINS', '').split(','),
 ]
 
-if NGROK_URL:
-    CSRF_TRUSTED_ORIGINS.extend([
-        f'https://{NGROK_URL}',
-        f'http://{NGROK_URL}'
-    ])
-    
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
@@ -97,9 +65,7 @@ CORS_ALLOW_HEADERS = [
     'user-agent',
     'x-csrftoken',
     'x-requested-with',
-    'ngrok-skip-browser-warning',  # Add this line
 ]
-
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -134,15 +100,15 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -164,9 +130,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-import dj_database_url
-
-# Database configuration using environment variables
+# Database configuration
 DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL'),
@@ -175,6 +139,7 @@ DATABASES = {
     )
 }
 
+# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -190,11 +155,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+# Logging configuration
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -209,7 +176,20 @@ LOGGING = {
     },
 }
 
+# Static files configuration for production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Stripe settings
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
+
+# Security settings for production
+if not DEBUG:
+    # HTTPS settings
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
