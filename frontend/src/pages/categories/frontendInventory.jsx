@@ -96,9 +96,9 @@ import banana from '../../assets/Food/groceries/guineo.jpg'
 import coffee from '../../assets/Food/snacks-beverages/coffee/coffee1.jpg';
 import coffee2 from '../../assets/Food/snacks-beverages/coffee/coffee2.jpg';
 //choco crispi
-import choco from '../../assets/Food/snacks-beverages/choco krispi/choko krispi.webp';
-import choco2 from '../../assets/Food/snacks-beverages/choco krispi/choko krispi2.webp';
-import choco3 from '../../assets/Food/snacks-beverages/choco krispi/choko krispi3.webp';
+import choco from '../../assets/Food/snacks-beverages/choco Krispi/choko krispi.webp';
+import choco2 from '../../assets/Food/snacks-beverages/choco Krispi/choko krispi2.webp';
+import choco3 from '../../assets/Food/snacks-beverages/choco Krispi/choko krispi3.webp';
 //yogurt
 import yogurt from '../../assets/Food/snacks-beverages/yogurt/yogurt1.jpg';
 import yogurt2 from '../../assets/Food/snacks-beverages/yogurt/yogurt2.jpg';
