@@ -29,8 +29,10 @@ ALLOWED_HOSTS = [
 # CORS origins - update with your frontend URL on Render
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
-    os.getenv('CORS_ALLOWED_ORIGINS', '').split(','),
+    'https://ecommerce2-frontend.onrender.com'
 ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 # Media and Static Files settings
 STATIC_URL = '/static/'
@@ -43,7 +45,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 # CSRF settings
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:5173',
-    os.getenv('CORS_ALLOWED_ORIGINS', '').split(','),
+    'https://ecommerce2-frontend.onrender.com'
 ]
 
 CORS_ALLOW_METHODS = [
