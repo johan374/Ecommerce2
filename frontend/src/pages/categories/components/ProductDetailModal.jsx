@@ -71,17 +71,17 @@ const ProductDetailModal = ({
     };
 
     // Prepare images array for carousel
+    // In ProductDetailModal.jsx, update the allImages array creation:
     const allImages = [
-        // Add main product image
+        // Primary product image
         {
             image_url: product.image_url,
-            alt_text: product.name,
-            crossOrigin: "anonymous"
+            alt_text: product.name  // Use product name as alt text
         },
-        // Add additional images if they exist
-        ...(product.additional_images || []).map(img => ({
-            ...img,
-            crossOrigin: "anonymous"
+        // Additional images (if any)
+        ...(product.additional_images || []).map(imgUrl => ({
+            image_url: imgUrl,
+            alt_text: `${product.name} - Additional View`  // More descriptive alt text
         }))
     ];
 
