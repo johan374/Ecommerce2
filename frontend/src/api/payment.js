@@ -1,21 +1,19 @@
 import axios from 'axios';
 
-// Create a separate Axios instance for payments with Ngrok URL
+// Create an Axios instance for payments using your Render backend URL
 const paymentApi = axios.create({
-    baseURL: `https://${import.meta.env.VITE_NGROK_URL}`, // Use environment variable
+    baseURL: import.meta.env.VITE_API_URL, // Use the same API URL as other requests
     headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': 'true'
+        'Content-Type': 'application/json'
     }
 });
 
-// In payment.js
 export const paymentAPI = {
     createOrder: async (items) => {
         console.log('Payment payload:', { items });
         try {
-            const response = await paymentApi.post('/api/orders/create/', { items });
+            const response = await paymentApi.post('/orders/create/', { items });
             return response;
         } catch (error) {
             console.error('Error details:', error.response?.data);
@@ -25,7 +23,7 @@ export const paymentAPI = {
     
     processPayment: async (paymentIntentId, paymentMethodId) => {
         try {
-            const response = await paymentApi.post('/api/process/', {
+            const response = await paymentApi.post('/process/', {
                 payment_intent_id: paymentIntentId,
                 payment_method_id: paymentMethodId
             });
