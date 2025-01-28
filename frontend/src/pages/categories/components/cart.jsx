@@ -48,6 +48,7 @@ const Cart = () => {
         clearCart();           // Clear the cart
         setShowPayment(false); // Hide payment modal
         setIsOpen(false);      // Close cart sidebar
+        window.location.href = '/payment/success';
     };
 
     return (

@@ -8,6 +8,7 @@ import Register from './pages/Register'            // Registration page
 import Electronics from './pages/categories/Electronics' // Electronics category page
 import Food from './pages/categories/Food'         // Food category page
 import Shop from './pages/shop'
+import PaymentSuccess from './pages/payments/PaymentSuccess';
 
 function AppRoute() {
  return (
@@ -32,6 +33,8 @@ function AppRoute() {
      {/* Dynamic route for food subcategories*/}
      {/* :subcategory is a URL parameter that can be accessed in the Food component*/}
      {/* Example URLs: /food/groceries, /food/prepared-meals*/}
+
+     <Route path="/payment/success" element={<PaymentSuccess />} />
    </Routes>
  )
 }

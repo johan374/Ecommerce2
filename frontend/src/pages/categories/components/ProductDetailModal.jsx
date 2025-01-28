@@ -65,6 +65,7 @@ const ProductDetailModal = ({
         console.log('Payment successful:', paymentIntent);
         setShowPayment(false);  // Close payment modal
         onClose();             // Close product modal
+        window.location.href = '/payment/success';
     };
 
     // Prepare images array for carousel
