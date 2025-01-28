@@ -10,7 +10,9 @@ const PaymentForm = ({
   // Optional callback function when payment succeeds
   onSuccess, 
   // Optional callback function when payment fails
-  onError 
+  onError, 
+  // Add this prop
+  onPaymentComplete 
 }) => {
   // Hook to access Stripe.js functionality for payment processing
   const stripe = useStripe();
@@ -60,6 +62,7 @@ const PaymentForm = ({
         // Payment successful
         // Call success callback with payment intent details
         onSuccess?.(result.paymentIntent);
+        onPaymentComplete?.(); // Add this line
       }
     } catch (err) {
       // Handle any unexpected errors during payment

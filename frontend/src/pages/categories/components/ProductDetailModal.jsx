@@ -7,6 +7,7 @@ import { useCart } from '../../../context/CartContext'; // Cart context hook
 import { paymentAPI } from '../../../api/payment'; // Payment API service
 import PaymentForm from '../../payments/PaymentForm'; // Payment form component
 import StripeWrapper from '../../payments/StripeWrapper'; // Stripe integration wrapper
+import { useNavigate } from 'react-router-dom';  // Add this import
 
 // ProductDetailModal component definition with props
 const ProductDetailModal = ({ 
@@ -24,6 +25,7 @@ const ProductDetailModal = ({
     const [showPayment, setShowPayment] = useState(false);          // Controls payment modal
     const [clientSecret, setClientSecret] = useState(null);         // Stripe client secret
     const [isProcessing, setIsProcessing] = useState(false);        // Processing state
+    const navigate = useNavigate();  // Add this hook
 
     // Early return if modal should be closed or no product
     if (!isOpen || !product) return null;
@@ -195,6 +197,7 @@ const ProductDetailModal = ({
                                 amount={Math.round(product.price * 100)}
                                 onSuccess={handlePaymentSuccess}
                                 onError={(error) => console.error('Payment failed:', error)}
+                                onPaymentComplete={() => navigate('/payment/success')}  // Add this line
                             />
                         </StripeWrapper>
                     </div>

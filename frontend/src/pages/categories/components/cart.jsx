@@ -23,6 +23,7 @@ const Cart = () => {
     const [showPayment, setShowPayment] = useState(false); // Controls payment modal visibility
     const [clientSecret, setClientSecret] = useState(null); // Stores Stripe client secret
     const [isProcessing, setIsProcessing] = useState(false); // Tracks checkout processing state
+    const navigate = useNavigate();
 
     // Handler for initiating checkout process
     const handleCheckout = async () => {
@@ -49,7 +50,6 @@ const Cart = () => {
         clearCart();           // Clear the cart
         setShowPayment(false); // Hide payment modal
         setIsOpen(false);      // Close cart sidebar
-        navigate('/payment/success'); // Use navigate instead of window.location
     };
 
     return (
@@ -181,6 +181,7 @@ const Cart = () => {
                                 amount={getTotalPriceInCents()}
                                 onSuccess={handlePaymentSuccess}
                                 onError={(error) => console.error('Payment failed:', error)}
+                                onPaymentComplete={() => navigate('/payment/success')}  // Add this line
                             />
                         </StripeWrapper>
                     </div>
