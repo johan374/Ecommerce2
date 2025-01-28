@@ -5,6 +5,7 @@ import { paymentAPI } from '../../../api/payment'; // API service for payments
 import PaymentForm from './../../payments/PaymentForm'; // Component for handling payments
 import StripeWrapper from './../../payments/StripeWrapper'; // Stripe integration wrapper
 import { ShoppingBag, X, Plus, Minus } from 'lucide-react'; // Icons from Lucide
+import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
     // Destructure cart functionality from custom hook
@@ -48,7 +49,7 @@ const Cart = () => {
         clearCart();           // Clear the cart
         setShowPayment(false); // Hide payment modal
         setIsOpen(false);      // Close cart sidebar
-        window.location.href = '/payment/success';
+        navigate('/payment/success'); // Use navigate instead of window.location
     };
 
     return (
