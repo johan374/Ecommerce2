@@ -71,18 +71,32 @@ const ProductDetailModal = ({
     };
 
     // Prepare images array for carousel
-    // In ProductDetailModal.jsx, update the allImages array creation:
+    // Create an array containing all images for the product (main image + additional images)
     const allImages = [
-        // Primary product image
+        // First element: Primary product image object
         {
+            // Use the main product image URL
             image_url: product.image_url,
-            alt_text: product.name  // Use product name as alt text
+            // Set alt text to the product name for accessibility
+            alt_text: product.name
         },
-        // Additional images (if any)
-        ...(product.additional_images || []).map(imgUrl => ({
-            image_url: imgUrl,
-            alt_text: `${product.name} - Additional View`  // More descriptive alt text
-        }))
+        
+        // Spread operator (...) to add additional images
+        ...(
+            // Check if product.additional_images exists, if not use empty array []
+            // This prevents errors if additional_images is undefined
+            product.additional_images || []
+        ).map(imgUrl => (
+            // Transform each image URL into an object with the same structure
+            // imgUrl is just a string URL from additional_images array
+            {
+                // Set the image URL from the additional images array
+                image_url: imgUrl,
+                // Create descriptive alt text by combining product name with "Additional View"
+                // Example: "iPhone 14 Pro - Additional View"
+                alt_text: `${product.name} - Additional View`
+            }
+        ))
     ];
 
     return (

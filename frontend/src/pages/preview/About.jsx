@@ -23,11 +23,6 @@ function About() {
       <div className="relative max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8">
         {/* Profile Section */}
         <div className="text-center mb-16">
-        <img
-            src={yo}
-            alt="Profile picture"
-            className="w-32 h-32 rounded-full mx-auto mb-6 border-2 border-white" // Changed from w-56 h-56 and border-4
-        />
           <h1 className="text-4xl font-bold text-white mb-4">Johan isidro Benoit</h1>
           <p className="text-xl text-gray-300 mb-6">Full Stack Developer | React & Django Specialist</p>
           
